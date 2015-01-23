@@ -26,16 +26,24 @@
           port: port,
           log: true
         }, function() {
-        pomelo.request("connector.entryHandler.entry", {uid:1600393}, function(data) {
+        pomelo.request("connector.entryHandler.entry", {uid:1600394}, function(data) {
 
           });
         });
       }
       function publish() {
-          pomelo.request("connector.entryHandler.publish", {from:1600393, to:1600394, msg:{type:'txt', content:'你有一条新的消息'}}, function(data) {
+          pomelo.request("connector.entryHandler.publish", {from:1600394, to:1600393, msg:{type:'txt', content:'1600393,你有一条新的消息'}}, function(data) {
 
           });
       }
+      function showMsg() {
+          alert("receiver..");
+          pomelo.on('sendChat', function(data) {
+              alert("This is a alert...");
+              alert(data);
+          });
+      }
+
     </script>
   </head>
   <body>
@@ -61,7 +69,7 @@
         <input id="test2" type="button" value="Publish" onclick="publish()"/>
       </div>
       <div class="g-button">
-        <input id="test3" type="button" value="S" onclick="entry()"/>
+        <input id="test3" type="button" value="ShowMsg" onclick="showMsg()"/>
       </div>
     </div>
   </body>

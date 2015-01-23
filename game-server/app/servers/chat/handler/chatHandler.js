@@ -1,5 +1,5 @@
 var chatRemote = require('../remote/chatRemote');
-var chatDao = require('../../../../dao/chatDao');
+//var chatDao = require('../../../../dao/chatDao');
 module.exports = function(app) {
 	return new Handler(app);
 };
@@ -29,7 +29,7 @@ handler.send = function(msg, session, next) {
 	};
 	channel = channelService.getChannel(rid, false);
 
-    chatDao.saveChat(param);
+//    chatDao.saveChat(param);
 	//the target is all users
 	if(msg.target == '*') {
 		channel.pushMessage('onChat', param);

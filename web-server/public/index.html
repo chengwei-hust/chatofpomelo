@@ -12,6 +12,8 @@
     <meta name="version" content="1.0" />
     <meta name="keywords" content="pomelo" />
     <link type="text/css" rel="stylesheet" href="css/base.css" />
+    <script src="js/lib/jquery-1.8.0.min.js" type="text/javascript">
+    </script>
     <script src="js/lib/build/build.js" type="text/javascript"></script>
     <script type="text/javascript">
       require('boot');
@@ -20,16 +22,31 @@
       var pomelo = window.pomelo;
       var host = "127.0.0.1";
       var port = "3010";
-      function show() {
+
+      function entry() {
+        var fromUserId = $("#uid").attr("value");
         pomelo.init({
           host: host,
           port: port,
           log: true
         }, function() {
-        pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
-            alert(data.msg);
+        pomelo.request("connector.entryHandler.entry", {uid: fromUserId}, function(data) {
+
           });
         });
+      }
+      function sendChat() {
+          var fromUserId = $("#uid").attr("value");
+          var toUserId = $("#toUid").attr("value");
+          var content = $("#msg").attr("value");
+          pomelo.request("connector.entryHandler.publish", {from:fromUserId, to:toUserId, msg:{type:'txt', content:content}}, function(data) {
+
+          });
+      }
+      function showMsg() {
+          pomelo.on('sendChat', function(data) {
+             alert(data.msg.content);
+          });
       }
     </script>
   </head>
@@ -42,15 +59,42 @@
       </div>
       <div class="g-background">
         <div class="g-content">
-          Welcome to Pomelo
+          Welcome to Pomelo Chat
         </div>
       </div>
-      <div class="g-link">
-        Home:
-        <a href="https://github.com/NetEase/pomelo">https://github.com/NetEase/pomelo</a>
-      </div>
+
       <div class="g-button">
-        <input id="test" type="button" value="Test Game Server" onclick="show()"/>
+      <tr>
+          <td>
+             <input id="uid" type="text" placeholder="enter your userId" />
+           </td>
+          <td>
+              <input id="entry" type="button" value="Entry" onclick="entry()"/>
+          </td>
+      </tr>
+      </div>
+
+      <div class="g-button">
+            <tr>
+                <td>
+                    <input id="toUid" type="text" placeholder="enter to userId" />
+                </td>
+            </tr>
+      </div>
+
+      <div class="g-button">
+      <tr>
+          <td>
+             <input id="msg" type="text" placeholder="enter your msg" />
+          </td>
+          <td>
+             <input id="publish" type="button" value="Publish" onclick="sendChat()"/>
+          </td>
+      </tr>
+      </div>
+
+      <div class="g-button">
+        <input id="test3" type="button" value="ShowMsg" onclick="showMsg()"/>
       </div>
     </div>
   </body>
