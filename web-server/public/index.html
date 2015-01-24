@@ -24,7 +24,7 @@
 
       <script type="text/javascript">
       var pomelo = window.pomelo;
-      var host = "127.0.0.1";
+      var host = "172.16.9.65";
       var port = "3010";
 
       function entry() {
@@ -38,6 +38,7 @@
 
           });
         });
+        showMsg();
       }
       function sendChat() {
           var fromUserId = $("#uid").attr("value");
@@ -72,10 +73,10 @@
       <div class="g-button">
       <tr>
           <td>
-             <input id="uid" type="text" placeholder="enter your userId" />
+             <input id="uid" type="text" placeholder="输入用户名或用户id" />
            </td>
           <td>
-              <input id="entry" type="button" value="Entry" onclick="entry()"/>
+              <input id="entry" type="button" value="登陆消息系统" onclick="entry()"/>
           </td>
       </tr>
       </div>
@@ -83,7 +84,7 @@
       <div class="g-button">
             <tr>
                 <td>
-                    <input id="toUid" type="text" placeholder="enter to userId" />
+                    消息接收人：<input id="toUid" type="text" placeholder="输入接收用户名或id" />
                 </td>
             </tr>
       </div>
@@ -91,10 +92,10 @@
       <div class="g-button">
       <tr>
           <td>
-             <input id="msg" type="text" placeholder="enter your msg" />
+             消息内容：<input id="msg" type="text" placeholder="输入消息内容" />
           </td>
           <td>
-             <input id="sendChat" type="button" value="Publish" onclick="sendChat()"/>
+             <input id="sendChat" type="button" value="发送" onclick="sendChat()"/>
           </td>
       </tr>
       </div>
@@ -102,10 +103,6 @@
         <div id="chatHistory">
         </div>
 
-
-        <div class="g-button">
-        <input id="test3" type="button" value="ShowMsg" onclick="showMsg()"/>
-      </div>
     </div>
   </body>
 </html>

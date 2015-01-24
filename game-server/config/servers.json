@@ -1,7 +1,7 @@
 {
   "development":{
     "connector": [
-    {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true}
+    {"id": "connector-server-1", "host": "172.16.9.65", "port": 3150, "clientPort": 3010, "frontend": true}
     ],
     "chat":[
     {"id":"chat-server-1", "host":"127.0.0.1", "port":6050}
@@ -9,7 +9,7 @@
   },
   "production":{
     "connector": [
-    {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true}
+    {"id": "connector-server-1", "host": "172.16.9.65", "port": 3150, "clientPort": 3010, "frontend": true}
     ],
     "chat":[
     {"id":"chat-server-1", "host":"127.0.0.1", "port":6050}

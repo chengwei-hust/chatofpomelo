@@ -1,3 +1,6 @@
+var chaoDao = require('../../../../dao/chatDao');
+var idSequenceService = require('../../../../service/idSequenceService');
+
 module.exports = function(app) {
   return new Handler(app);
 };
@@ -19,9 +22,9 @@ Handler.prototype.entry = function(msg, session, next) {
   console.info(msg);
   console.info(session);
 
+  //登录绑定uid到session
   session.bind(msg.uid);
 
-  //  (session.id);
   next(null, {code: 200, msg: 'connect to server is ok.'});
 };
 
@@ -35,21 +38,25 @@ Handler.prototype.sendChat = function(msg, session, next) {
         console.info("FromUserId must exsits");
         return;
     }
+
     // 单聊
-    if(msg.to > 0) {
+    if(!!msg.to && msg.to > 0) {
+        msg.id = idSequenceService.getNext('chat');
         channelService.pushMessageByUids('sendChat', msg, [{
             uid: msg.to,
             sid: serverId
         }]);
 
     // 群聊
-    } else if (msg.group > 0) {
+    } else if (!!msg.group && msg.group > 0) {
+        msg.id = idSequenceService.getNext('chat');
         var channelName = msg.group;
         var channel = channelService.getChannel(channelName, true);
         channel.pushMessage('sendChat', msg);
     }
 
     console.info(session);
+    chaoDao.saveChat(msg);
 
     next(null, {code: 200, msg: 'send chat is ok.'});
 };
@@ -61,23 +68,16 @@ Handler.prototype.sendChat = function(msg, session, next) {
  * @param  {Object}   session current session object
  * @param  {Function} next    next step callback
  * @return {Void}
- */
+
 Handler.prototype.publish = function(msg, session, next) {
-    console.info("enter publish................");
-    console.info(msg);
-    console.info(session);
 	var result = {
 		topic: 'publish',
 		payload: JSON.stringify({code: 200, msg: 'publish message is ok.'})
 	};
-    var channelService = this.app.get('channelService');
-    channelService.pushMessageByUids('sendChat', msg, [{
-        uid: msg.to,
-        sid: this.app.get('serverId')
-    }]);
-
-  next(null, result);
+   next(null, result);
 };
+
+*/
 
 /**
  * Subscribe route for mqtt connector.
@@ -86,7 +86,7 @@ Handler.prototype.publish = function(msg, session, next) {
  * @param  {Object}   session current session object
  * @param  {Function} next    next step callback
  * @return {Void}
- */
+
 Handler.prototype.subscribe = function(msg, session, next) {
 	var result = {
 		topic: 'subscribe',
@@ -95,4 +95,4 @@ Handler.prototype.subscribe = function(msg, session, next) {
   next(null, result);
 };
 
-
+*/
