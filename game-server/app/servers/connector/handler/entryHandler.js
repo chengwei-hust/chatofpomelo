@@ -10,7 +10,35 @@ var Handler = function(app) {
 };
 
 /**
- * New client entry.
+ * 新创建一个群
+ *
+ * @param  {Object}   msg     request message
+ * @param  {Object}   session current session object
+ * @param  {Function} next    next step callback
+ * @return {Void}
+ */
+Handler.prototype.createGroup = function(msg, session, next) {
+    console.info("enter createGroup................");
+
+    if (!!msg.group) {
+        var channelName = msg.group;
+        var channelService = this.app.get('channelService');
+        var channel = channelService.getChannel(channelName, true);
+        var serverId = this.app.get('serverId');
+        if( !!channel) {
+
+            channel.add(1, serverId);
+            channel.add(2, serverId);
+            channel.add(3, serverId);
+        }
+
+    }
+
+    next(null, {code: 200, msg: 'create group is ok.'});
+};
+
+/**
+ * 用户进入系统
  *
  * @param  {Object}   msg     request message
  * @param  {Object}   session current session object
@@ -35,7 +63,7 @@ Handler.prototype.sendChat = function(msg, session, next) {
     var channelService = this.app.get('channelService');
     var serverId = this.app.get('serverId');
     if (!msg.from) {
-        console.info("FromUserId must exsits");
+        console.info("fromUserId must exsits");
         return;
     }
 

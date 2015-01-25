@@ -48,9 +48,23 @@
 
           });
       }
+      function sendGroupChat() {
+          var fromUserId = $("#uid").attr("value");
+          var groupId = $("#groupId").attr("value");
+          var content = $("#msg").attr("value");
+          pomelo.request("connector.entryHandler.sendChat", {from:fromUserId, group:groupId, msg:{type:'txt', content:content}}, function(data) {
+
+          });
+      }
+
       function showMsg() {
           pomelo.on('sendChat', function(data) {
-              addMessage(data.from, data.to, data.msg.content);
+              if (!!data.to) {
+                  addMessage(data.from, data.to, data.msg.content);
+              }
+              else if(!!data.group) {
+                  addGroupMessage(data.from, data.group, data.msg.content);
+              }
               $("#chatHistory").show();
 
           });
@@ -87,6 +101,11 @@
                     消息接收人：<input id="toUid" type="text" placeholder="输入接收用户名或id" />
                 </td>
             </tr>
+          <tr>
+              <td>
+                  消息接收的群：<input id="groupId" type="text" placeholder="输入接收的群名或id" />
+              </td>
+          </tr>
       </div>
 
       <div class="g-button">
@@ -96,6 +115,9 @@
           </td>
           <td>
              <input id="sendChat" type="button" value="发送" onclick="sendChat()"/>
+          </td>
+          <td>
+              <input id="sendGroupChat" type="button" value="发送群消息" onclick="sendGroupChat()"/>
           </td>
       </tr>
       </div>

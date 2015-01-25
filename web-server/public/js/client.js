@@ -40,8 +40,8 @@ function scrollDown(base) {
 };
 
 // add message on board
-function addMessage(from, target, text, time) {
-    var name = (target == '*' ? 'all' : target);
+function addMessage(from, to, text, time) {
+    var name = (to == '*' ? 'all' : to);
     if(text === null) return;
     if(time == null) {
         // if the time is null or undefined, use the current time.
@@ -66,3 +66,29 @@ function addMessage(from, target, text, time) {
     scrollDown(base);
 };
 
+
+function addGroupMessage(from, group, text, time) {
+    var name = (group == '*' ? 'all' : group);
+    if(text === null) return;
+    if(time == null) {
+        // if the time is null or undefined, use the current time.
+        time = new Date();
+    } else if((time instanceof Date) === false) {
+        // if it's a timestamp, interpret it
+        time = new Date(time);
+    }
+    //every message you see is actually a table with 3 cols:
+    //  the time,
+    //  the person who caused the event,
+    //  and the content
+    var messageElement = $(document.createElement("table"));
+    messageElement.addClass("message");
+    // sanitize
+    text = util.toStaticHTML(text);
+    var content = '<tr>' + '  <td class="date">' + util.timeString(time) + '</td>' + '  <td class="nick">' + util.toStaticHTML(from) + ' says in group ' + name + ': ' + '</td>' + '  <td class="msg-text">' + text + '</td>' + '</tr>';
+    messageElement.html(content);
+    //the log is the stream that we view
+    $("#chatHistory").append(messageElement);
+    base += increase;
+    scrollDown(base);
+};

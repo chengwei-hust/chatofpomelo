@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>
+        Pomelo
+    </title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="content-style-type" content="text/css" />
+    <meta http-equiv="content-scripte-type" content="text/javascript" />
+    <meta name="author" content="netease" />
+    <meta name="version" content="1.0" />
+    <meta name="keywords" content="pomelo" />
+    <link type="text/css" rel="stylesheet" href="css/base.css" />
+    <script src="js/lib/jquery-1.8.0.min.js" type="text/javascript">
+    </script>
+    <script src="js/lib/build/build.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        require('boot');
+    </script>
+    <script src="js/client.js">
+
+    </script>
+
+    <script type="text/javascript">
+        var pomelo = window.pomelo;
+        var host = "172.16.9.65";
+        var port = "3010";
+
+        function connect() {
+            pomelo.init({
+                host: host,
+                port: port,
+                log: true
+            }, function() {
+            });
+        }
+
+        function createGroup() {
+            var groupId = $("#groupId").attr("value");
+            pomelo.request("connector.entryHandler.createGroup", {group:groupId}, function(data) {
+
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div class="g-doc">
+    <div class="g-banner" style="border:none">
+        <div class="logo">
+            <div class="img"></div>
+        </div>
+    </div>
+    <div class="g-background">
+        <div class="g-content">
+            Welcome to Pomelo Chats
+        </div>
+    </div>
+
+    <div class="g-button">
+        <tr>
+            <td>
+                <input id="connect" type="button" value="连接到服务器" onclick="connect()"/>
+            </td>
+        </tr>
+    </div>
+
+    <div class="g-button">
+        <tr>
+            <td>
+                群名或id：<input id="groupId" type="text" placeholder="输入群名或id" />
+            </td>
+            <td>
+                <input id="createGroup" type="button" value="创建群" onclick="createGroup()"/>
+            </td>
+        </tr>
+    </div>
+
+
+    <div id="chatHistory">
+    </div>
+
+</div>
+</body>
+</html>
