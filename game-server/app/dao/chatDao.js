@@ -13,6 +13,8 @@ var MongoClient = require('mongodb').MongoClient;
 
 exports.saveChat = function(param) {
 
+    console.info("save chat................");
+
     MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
         if (err) {
             console.log(err);
@@ -20,6 +22,10 @@ exports.saveChat = function(param) {
         }
 
         db.collection('chat').insert(param, {w: 1}, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            console.info(result);
         });
     });
 

@@ -5,6 +5,9 @@
     ],
     "chat":[
     {"id":"chat-server-1", "host":"127.0.0.1", "port":6050}
+    ],
+    "gate":[
+    {"id": "gate-server-1", "host": "172.16.9.65", "clientPort": 3000, "frontend": true}
     ]
   },
   "production":{
@@ -13,6 +16,9 @@
     ],
     "chat":[
     {"id":"chat-server-1", "host":"127.0.0.1", "port":6050}
+    ],
+    "gate":[
+    {"id": "gate-server-1", "host": "172.16.9.65", "clientPort": 3000, "frontend": true}
     ]
   }
 }

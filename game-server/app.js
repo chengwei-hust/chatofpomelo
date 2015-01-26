@@ -8,13 +8,29 @@ app.set('name', 'chatofpomelo');
 
 // app configuration
 app.configure('production|development', 'connector', function(){
-  app.set('connectorConfig',
-    {
-      connector : pomelo.connectors.hybridconnector,
-      heartbeat : 3,
-      useDict : true,
-      useProtobuf : true
-    });
+    app.set('connectorConfig',
+        {
+            connector : pomelo.connectors.sioconnector,
+            //websocket, htmlfile, xhr-polling, jsonp-polling, flashsocket
+            transports : ['websocket'],
+            heartbeats : true,
+            closeTimeout : 60,
+            heartbeatTimeout : 60,
+            heartbeatInterval : 25
+        });
+});
+
+app.configure('production|development', 'connector', function(){
+    app.set('connectorConfig',
+        {
+            connector : pomelo.connectors.sioconnector,
+            //websocket, htmlfile, xhr-polling, jsonp-polling, flashsocket
+            transports : ['websocket'],
+            heartbeats : true,
+            closeTimeout : 60,
+            heartbeatTimeout : 60,
+            heartbeatInterval : 25
+        });
 });
 
 // start app
