@@ -33,7 +33,7 @@
       var port = "3010";
 
       function entry() {
-        var fromUserId = $("#uid").attr("value");
+        var fromUserId = parseInt($("#uid").attr("value"));
         pomelo.init({
           host: host,
           port: port,
@@ -43,32 +43,40 @@
 
           });
         });
-        showMsg();
+        showMsg(fromUserId);
       }
       function sendChat() {
-          var fromUserId = $("#uid").attr("value");
-          var toUserId = $("#toUid").attr("value");
+          var fromUserId = parseInt($("#uid").attr("value"));
+          var toUserId = parseInt($("#toUid").attr("value"));
           var content = $("#msg").attr("value");
-          pomelo.request("connector.entryHandler.sendChat", {from:fromUserId, to:toUserId, msg:{type:'txt', content:content}}, function(data) {
+          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, to:toUserId, msg:{type:'txt', content:content}}, function(data) {
 
           });
       }
       function sendGroupChat() {
-          var fromUserId = $("#uid").attr("value");
-          var groupId = $("#groupId").attr("value");
+          var fromUserId = parseInt($("#uid").attr("value"));
+          var groupId = parseInt($("#groupId").attr("value"));
           var content = $("#msg").attr("value");
-          pomelo.request("connector.entryHandler.sendChat", {from:fromUserId, group:groupId, msg:{type:'txt', content:content}}, function(data) {
+          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, group:groupId, msg:{type:'txt', content:content}}, function(data) {
 
           });
       }
 
-      function showMsg() {
-          pomelo.on('sendChat', function(data) {
+      function ack(reader, id) {
+          pomelo.notify("chat.chatHandler.ack", {uid:reader, id: id}, function(data) {
+          });
+      }
+
+      function showMsg(reader) {
+          pomelo.on('chatMsg', function(data) {
               if (!!data.to) {
                   addMessage(data.from, data.to, data.msg.content);
               }
               else if(!!data.group) {
                   addGroupMessage(data.from, data.group, data.msg.content);
+              }
+              if(!!data.id) {
+                  ack(reader, data.id);
               }
               $("#chatHistory").show();
 

@@ -2,14 +2,6 @@
  * Created by chengwei on 15-1-22.
  */
 var MongoClient = require('mongodb').MongoClient;
-//var db;
-
-// Initialize connection once
-//MongoClient.connect("mongodb://localhost:27017/mydb", function(err, database) {
-//    if(err) throw err;
-//    db = database;
-//});
-
 
 exports.saveChat = function(param) {
 
@@ -28,7 +20,44 @@ exports.saveChat = function(param) {
             console.info(result);
         });
     });
+};
 
+exports.markRead = function(uid, id) {
 
+    console.info("mark read...............");
+
+    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+        if (err) {
+            console.log(err);
+            return console.dir(err);
+        }
+
+        db.collection('chat').update({id: id},{$set: {isReaded: true}}, {}, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            console.info(result);
+        });
+    });
 
 };
+
+exports.getUnreadChatsByGroups = function(groupIds, callback) {
+    console.info("getUnreadChatsByGroups......");
+    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+        if (err) {
+            console.log(err);
+            return console.dir(err);
+        }
+
+        db.collection('chat').find({group:{$in:groupIds}}, {_id:0}, function(err,result) {
+            result.toArray(function (err, arr) {
+                if (err) {
+                    console.log("results toArray error");
+                    return;
+                }
+                callback(arr);
+            });
+        });
+    });
+}

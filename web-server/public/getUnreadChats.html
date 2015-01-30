@@ -22,6 +22,11 @@
 
     </script>
 
+    <script src="js/lib/socket.io.js">
+    </script>
+    <script src="js/lib/pomeloclient.js">
+    </script>
+
     <script type="text/javascript">
         var pomelo = window.pomelo;
         var host = "172.16.9.65";
@@ -37,8 +42,15 @@
         }
 
         function createGroup() {
-            var groupId = $("#groupId").attr("value");
-            pomelo.request("connector.entryHandler.createGroup", {group:groupId}, function(data) {
+            var groupId = parseInt($("#groupId").attr("value"), 10);
+            pomelo.request("chat.chatHandler.createGroup", {group:groupId}, function(data) {
+
+            });
+        }
+
+        function getUnreadChats() {
+            var uid = parseInt($("#uid").attr("value"), 10);
+            pomelo.request("chat.chatHandler.getUnreadChats", {uid:uid}, function(data) {
 
             });
         }
@@ -69,7 +81,8 @@
     <div class="g-button">
         <tr>
             <td>
-                群名或id：<input id="groupId" type="text" placeholder="输入群名或id" />
+                群id：<input id="groupId" type="text" placeholder="输入群id" />
+                用户id：<input id="uid" type="text" placeholder="输入用户id" />
             </td>
             <td>
                 <input id="createGroup" type="button" value="创建群" onclick="createGroup()"/>
@@ -77,6 +90,16 @@
         </tr>
     </div>
 
+    <div class="g-button">
+        <tr>
+            <td>
+                用户id：<input id="uid" type="text" placeholder="输入用户id" />
+            </td>
+            <td>
+                <input id="getUnreadChats" type="button" value="获取未读的消息" onclick="getUnreadChats()"/>
+            </td>
+        </tr>
+    </div>
 
     <div id="chatHistory">
     </div>

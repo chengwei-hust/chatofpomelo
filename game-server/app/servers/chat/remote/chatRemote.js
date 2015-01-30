@@ -8,6 +8,16 @@ var ChatRemote = function(app) {
 };
 
 /**
+ * 用户进入系统
+ */
+ChatRemote.prototype.enter = function(uid, sid, cb) {
+//    console.info('enter chatRemote enter.......');
+//
+//    cb();
+}
+
+
+/**
  * Add user into chat channel.
  *
  * @param {String} uid unique id for user
@@ -18,11 +28,6 @@ var ChatRemote = function(app) {
  */
 ChatRemote.prototype.add = function(uid, sid, name, flag, cb) {
     console.info('enter chatRemote add.......');
-    console.info(uid);
-    console.info(sid);
-    console.info(name);
-    console.info(flag);
-    console.info(cb);
 	var channel = this.channelService.getChannel(name, flag);
     console.info(channel);
 	var username = uid.split('*')[0];

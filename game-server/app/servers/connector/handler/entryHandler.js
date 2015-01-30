@@ -1,5 +1,4 @@
-var chaoDao = require('../../../dao/chatDao');
-var idSequenceService = require('../../../service/idSequenceService');
+
 
 module.exports = function(app) {
   return new Handler(app);
@@ -7,34 +6,6 @@ module.exports = function(app) {
 
 var Handler = function(app) {
   this.app = app;
-};
-
-/**
- * 新创建一个群
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next step callback
- * @return {Void}
- */
-Handler.prototype.createGroup = function(msg, session, next) {
-    console.info("enter createGroup................");
-
-    if (!!msg.group) {
-        var channelName = msg.group;
-        var channelService = this.app.get('channelService');
-        var channel = channelService.getChannel(channelName, true);
-        var serverId = this.app.get('serverId');
-        if( !!channel) {
-
-            channel.add(1, serverId);
-            channel.add(2, serverId);
-            channel.add(3, serverId);
-        }
-
-    }
-
-    next(null, {code: 200, msg: 'create group is ok.'});
 };
 
 /**
@@ -54,47 +25,15 @@ Handler.prototype.entry = function(msg, session, next) {
   session.bind(msg.uid);
 
   next(null, {code: 200, msg: 'connect to server is ok.'});
+
+    //put user into channel
+//  this.app.rpc.chat.chatRemote.enter(session, msg.uid, this.app.get('serverId'),function(){
+//        next(null, {code: 200, msg: 'connect to server is ok.'});
+//  });
+
 };
 
-Handler.prototype.sendChat = function(msg, session, next) {
 
-    console.info("enter sendChat................");
-    console.info(msg);
-    var channelService = this.app.get('channelService');
-    var serverId = this.app.get('serverId');
-    if (!msg.from) {
-        console.info("fromUserId must exsits");
-        return;
-    }
-
-    // 单聊
-    if(!!msg.to && msg.to > 0) {
-        idSequenceService.getNext('chat', function(id) {
-            msg.id = id;
-            channelService.pushMessageByUids('sendChat', msg, [{
-                uid: msg.to,
-                sid: serverId
-            }]);
-            chaoDao.saveChat(msg);
-        });
-
-
-    // 群聊
-    } else if (!!msg.group && msg.group > 0) {
-        idSequenceService.getNext('chat', function(id) {
-            msg.id = id;
-            var channelName = msg.group;
-            var channel = channelService.getChannel(channelName, true);
-            channel.pushMessage('sendChat', msg);
-            chaoDao.saveChat(msg);
-        });
-    }
-
-    console.info(session);
-
-
-    next(null, {code: 200, msg: 'send chat is ok.'});
-};
 
 /**
  * Publish route for mqtt connector.
