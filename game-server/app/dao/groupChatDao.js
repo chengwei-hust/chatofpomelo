@@ -1,11 +1,11 @@
 /**
- * Created by chengwei on 15-1-22.
+ * Created by chengwei on 15-1-30.
  */
 var MongoClient = require('mongodb').MongoClient;
 
 exports.saveChat = function(param) {
 
-    console.info("save chat................");
+    console.info("save group chat................");
 
     MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
         if (err) {
@@ -13,7 +13,7 @@ exports.saveChat = function(param) {
             return console.dir(err);
         }
 
-        db.collection('chat').insert(param, {w: 1}, function (err, result) {
+        db.collection('group_chat').insert(param, {w: 1}, function (err, result) {
             if (err) {
                 console.log(err);
             }
@@ -24,7 +24,7 @@ exports.saveChat = function(param) {
 
 exports.markReceived = function(uid, id) {
 
-    console.info("mark read...............");
+    console.info("mark group chat received...............");
 
     MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
         if (err) {
@@ -32,7 +32,7 @@ exports.markReceived = function(uid, id) {
             return console.dir(err);
         }
 
-        db.collection('chat').update({id: id},{$set: {isRecieved: true}}, {}, function (err, result) {
+        db.collection('group_chat').update({id: id},{$addToSet: {receivedUsers: uid}}, {}, function (err, result) {
             if (err) {
                 console.log(err);
             }
@@ -42,15 +42,15 @@ exports.markReceived = function(uid, id) {
 
 };
 
-exports.getUnReceivedChats = function(uid, callback) {
-    console.info("getUnReceivedChats......");
+exports.getUnReceivedChatsByGroups = function(groupIds, uid, callback) {
+    console.info("getUnreadChatsByGroups......");
     MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
         if (err) {
             console.log(err);
             return console.dir(err);
         }
 
-        db.collection('chat').find({to:uid, isRecieved:{$exists:false}}, {_id:0}, function(err,result) {
+        db.collection('group_chat').find({group:{$in:groupIds}, receivedUsers:{$nin:[uid]}}, {_id:0}, function(err,result) {
             result.toArray(function (err, arr) {
                 if (err) {
                     console.log("results toArray error");

@@ -62,8 +62,8 @@
           });
       }
 
-      function ack(reader, id) {
-          pomelo.notify("chat.chatHandler.ack", {uid:reader, id: id}, function(data) {
+      function ack(reader, id, chatType) {
+          pomelo.notify("chat.chatHandler.ack", {uid:reader, id: id, chatType: chatType}, function(data) {
           });
       }
 
@@ -76,7 +76,26 @@
                   addGroupMessage(data.from, data.group, data.msg.content);
               }
               if(!!data.id) {
-                  ack(reader, data.id);
+                  var chatType = !!data.group ? 1 : 0;   // 1 表示群聊  0　表示单聊
+                  ack(reader, data.id, chatType);
+              }
+              $("#chatHistory").show();
+
+          });
+
+          pomelo.on('unReceivedMsg', function(data) {
+              var unReceivedGroupChats = data.unReceivedGroupChats;
+              for(var i in unReceivedGroupChats) {
+                  var groupChat = unReceivedGroupChats[i];
+                  addGroupMessage(groupChat.from, groupChat.group, groupChat.msg.content, new Date(groupChat.timestamp));
+                  ack(reader, groupChat.id, 1);
+              }
+
+              var unReceivedChats = data.unReceivedChats;
+              for(var j in unReceivedChats) {
+                  var chat = unReceivedChats[j];
+                  addMessage(chat.from, chat.to, chat.msg.content, new Date(chat.timestamp));
+                  ack(reader, chat.id, 0);
               }
               $("#chatHistory").show();
 

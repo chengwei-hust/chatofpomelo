@@ -2,14 +2,6 @@
  * Created by chengwei on 15-1-26.
  */
 var MongoClient = require('mongodb').MongoClient;
-//var db;
-
-// Initialize connection once
-//MongoClient.connect("mongodb://localhost:27017/mydb", function(err, database) {
-//    if(err) throw err;
-//    db = database;
-//});
-
 
 exports.getNextId = function(tableName, callback) {
 

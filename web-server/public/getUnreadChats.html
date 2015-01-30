@@ -41,16 +41,9 @@
             });
         }
 
-        function createGroup() {
-            var groupId = parseInt($("#groupId").attr("value"), 10);
-            pomelo.request("chat.chatHandler.createGroup", {group:groupId}, function(data) {
-
-            });
-        }
-
         function getUnreadChats() {
             var uid = parseInt($("#uid").attr("value"), 10);
-            pomelo.request("chat.chatHandler.getUnreadChats", {uid:uid}, function(data) {
+            pomelo.request("chat.chatHandler.getUnReceivedChats", {uid:uid}, function(data) {
 
             });
         }
@@ -78,17 +71,7 @@
         </tr>
     </div>
 
-    <div class="g-button">
-        <tr>
-            <td>
-                群id：<input id="groupId" type="text" placeholder="输入群id" />
-                用户id：<input id="uid" type="text" placeholder="输入用户id" />
-            </td>
-            <td>
-                <input id="createGroup" type="button" value="创建群" onclick="createGroup()"/>
-            </td>
-        </tr>
-    </div>
+
 
     <div class="g-button">
         <tr>

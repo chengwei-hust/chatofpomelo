@@ -1,5 +1,6 @@
 var chatRemote = require('../remote/chatRemote');
 var chatDao = require('../../../dao/chatDao');
+var groupChatDao = require('../../../dao/groupChatDao');
 var groupsDao = require('../../../dao/groupsDao');
 var idSequenceService = require('../../../service/idSequenceService');
 
@@ -87,9 +88,7 @@ Handler.prototype.sendChat = function(msg, session, next) {
     console.info("enter sendChat................");
     console.info(msg);
     var channelService = this.app.get('channelService');
-//    var serverId = this.app.get('serverId');
 
-//    var serverId = session.frontendId;
     if (!msg.from) {
         console.info("fromUserId must exsits");
         return;
@@ -114,7 +113,7 @@ Handler.prototype.sendChat = function(msg, session, next) {
             var channelName = msg.group;
             var channel = channelService.getChannel(channelName, true);
             channel.pushMessage('chatMsg', msg);
-            chatDao.saveChat(msg);
+            groupChatDao.saveChat(msg);
         });
     }
 
@@ -127,26 +126,39 @@ Handler.prototype.sendChat = function(msg, session, next) {
 Handler.prototype.ack = function(msg, session, next) {
     console.info(msg);
 
-    chatDao.markRead(msg.uid, msg.id);
+    if(!!msg.chatType && msg.chatType == 1) {
+        groupChatDao.markReceived(msg.uid, msg.id);
+    } else {
+        chatDao.markReceived(msg.uid, msg.id);
+    }
     next(null, {code: 200, msg: 'ack is ok.'});
 }
 
-Handler.prototype.getUnreadChats = function(msg, session, next) {
+Handler.prototype.getUnReceivedChats = function(msg, session, next) {
 
+    var channelService = this.app.get('channelService');
     var uid = msg.uid;
     console.info(msg);
 
     groupsDao.getGroupsByUid(uid, function(groups) {
-        console.info(groups.length);
-        console.info(groups);
         var groupIds = [];
         for (var i in groups) {
            console.info(groups[i]);
             groupIds.push(groups[i].group);
         }
-        console.info(groupIds);
-        chatDao.getUnreadChatsByGroups(groupIds, function(chats) {
-            console.info(chats);
+        groupChatDao.getUnReceivedChatsByGroups(groupIds, uid, function(groupChats) {
+            var result = {};
+            result.unReceivedGroupChats = groupChats;
+            chatDao.getUnReceivedChats(uid, function(chats) {
+               result.unReceivedChats = chats;
+               console.info(result);
+
+               channelService.pushMessageByUids('unReceivedMsg', result, [{
+                   uid: uid,
+                   sid: session.frontendId
+               }]);
+            });
+
         });
 
 
