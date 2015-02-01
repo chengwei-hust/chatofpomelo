@@ -14,6 +14,7 @@ exports.getNextId = function(tableName, callback) {
         var idsTable = db.collection('ids');
         idsTable.findAndModify({"table_name":tableName}, [['table_name','asc']], {$inc:{'id':1}}, {new:true,upsert:true}, function (err, result) {
                 callback(result.id);
+                db.close();
         });
 
 
