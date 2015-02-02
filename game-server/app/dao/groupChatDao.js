@@ -18,6 +18,7 @@ exports.saveChat = function(param) {
                 console.log(err);
             }
             console.info(result);
+            db.close();
         });
     });
 };
@@ -37,6 +38,7 @@ exports.markReceived = function(uid, id) {
                 console.log(err);
             }
             console.info(result);
+            db.close();
         });
     });
 
@@ -58,6 +60,7 @@ exports.getUnReceivedChatsByGroups = function(groupIds, uid, callback) {
                 }
                 callback(arr);
             });
+            db.close();
         });
     });
 }

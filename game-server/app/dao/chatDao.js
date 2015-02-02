@@ -60,6 +60,7 @@ exports.getUnReceivedChats = function(uid, callback) {
                 }
                 callback(arr);
             });
+            db.close();
         });
     });
 }
