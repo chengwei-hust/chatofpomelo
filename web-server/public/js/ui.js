@@ -1,4 +1,1 @@
-
-
-
-QxEmotion($('#emotion-btn'), $('#msg'));
+QxEmotion($("#emotion-btn"), $("#msg"));

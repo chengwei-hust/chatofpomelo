@@ -179,3 +179,9 @@ body, table {
     color: #f00;
     cursor: pointer;
 }
+
+.emotion-panel{
+    position:fixed;
+    display:none;
+    z-index:200;
+}
