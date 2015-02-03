@@ -1,0 +1,4 @@
+
+
+
+QxEmotion($('#emotion-btn'), $('#msg'));
