@@ -8,7 +8,6 @@
 
     QxEmotion.Bind = function (_emotion_btn, _edit) {
         _emotion_btn.on('click', function(){
-            alert(333);
             var emotion_panel = $('.emotion-panel');
             if(0 == emotion_panel.length) {
                 emotion_panel = QxEmotion._CreateEmotionPanel();
