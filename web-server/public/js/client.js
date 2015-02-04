@@ -6,7 +6,9 @@ util = {
     //  html sanitizer
     toStaticHTML: function(inputHtml) {
         inputHtml = inputHtml.toString();
-        return inputHtml.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+//        return inputHtml.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return  QxEmotion.Parse(inputHtml);
     },
     //pads n with zeros on the left,
     //digits is minimum length of output
