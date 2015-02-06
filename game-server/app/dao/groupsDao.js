@@ -14,7 +14,7 @@ exports.getGroupsByUid = function(uid, callback) {
         }
 
         var groupsTable = db.collection('groups');
-        groupsTable.find({"users":{"$elemMatch":{"uid":uid}}}, {"group":1, "_id":0}, function (err, results) {
+        groupsTable.find({"members":{"$elemMatch":{"uid":uid}}}, {"group":1, "_id":0}, function (err, results) {
 
             results.toArray(function(err,arr){
                 if(err){
@@ -41,7 +41,7 @@ exports.addUser = function(uid, groupId) {
         }
 
         var groupsTable = db.collection('groups');
-        groupsTable.update({group: groupId}, {$addToSet: {users: {uid: uid}}}, {new: true, upsert: true}, function (err, result) {
+        groupsTable.update({group: groupId}, {$addToSet: {members: {uid: uid}}}, {new: true, upsert: true}, function (err, result) {
             if (err) {
                 console.log(err);
             }
