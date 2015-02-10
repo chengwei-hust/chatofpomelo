@@ -37,21 +37,24 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "127.0.0.1";
-      var port = "3010";
+      var port = "3000";
 
-      function entry() {
-        var fromUserId = parseInt($("#uid").attr("value"));
-        pomelo.init({
-          host: host,
-          port: port,
-          log: true
-        }, function() {
-        pomelo.request("connector.entryHandler.entry", {uid: fromUserId}, function(data) {
-
-          });
-        });
-        showMsg(fromUserId);
+      function gate() {
+          var fromUserId = parseInt($("#uid").attr("value"));
+          pomelo.init({host: host, port: port, log: true}, queryEntry);
+          function queryEntry() {
+              pomelo.request("gate.gateHandler.queryEntry", {uid: fromUserId}, requestEntry);
+          }
+          function requestEntry(address) {
+              pomelo.init({host: address.host, port: address.port, log: true}, entry);
+          }
+          function entry() {
+              pomelo.request("connector.entryHandler.entry", {uid: fromUserId}, function (data) {
+                  showMsg(fromUserId);
+              });
+          }
       }
+
       function sendChat() {
           var fromUserId = parseInt($("#uid").attr("value"));
           var toUserId = parseInt($("#toUid").attr("value"));
@@ -129,7 +132,7 @@
              <input id="uid" type="text" placeholder="输入用户名或用户id" />
            </td>
           <td>
-              <input id="entry" type="button" value="登陆消息系统" onclick="entry()"/>
+              <input id="entry" type="button" value="登陆消息系统" onclick="gate()"/>
           </td>
       </tr>
       </div>

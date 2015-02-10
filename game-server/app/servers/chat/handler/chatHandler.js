@@ -4,6 +4,8 @@ var groupChatDao = require('../../../dao/groupChatDao');
 var groupsDao = require('../../../dao/groupsDao');
 var idSequenceService = require('../../../service/idSequenceService');
 
+var dispatcher = require('../../../util/dispatcher');
+
 module.exports = function(app) {
 	return new Handler(app);
 };
@@ -88,6 +90,7 @@ Handler.prototype.sendChat = function(msg, session, next) {
     console.info("enter sendChat................");
     console.info(msg);
     var channelService = this.app.get('channelService');
+    var connectors = this.app.getServersByType('connector');
 
     if (!msg.from) {
         console.info("fromUserId must exsits");
@@ -98,6 +101,12 @@ Handler.prototype.sendChat = function(msg, session, next) {
     if(!!msg.to && msg.to > 0) {
         idSequenceService.getNext('chat', function(id) {
             msg.id = id;
+
+            // 拿session名称
+
+            var res = dispatcher.dispatch(msg.to, connectors);
+            console.info("test..........................." + res.toString());
+
             channelService.pushMessageByUids('chatMsg', msg, [{
                 uid: msg.to,
                 sid: session.frontendId
