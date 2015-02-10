@@ -102,14 +102,12 @@ Handler.prototype.sendChat = function(msg, session, next) {
         idSequenceService.getNext('chat', function(id) {
             msg.id = id;
 
-            // 拿session名称
-
+            // 拿session ID
             var res = dispatcher.dispatch(msg.to, connectors);
-            console.info("test..........................." + res.toString());
 
             channelService.pushMessageByUids('chatMsg', msg, [{
                 uid: msg.to,
-                sid: session.frontendId
+                sid: res.id
             }]);
             chatDao.saveChat(msg);
         });
