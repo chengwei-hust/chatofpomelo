@@ -46,6 +46,7 @@
               pomelo.request("gate.gateHandler.queryEntry", {uid: fromUserId}, requestEntry);
           }
           function requestEntry(address) {
+              pomelo.disconnect();
               pomelo.init({host: address.host, port: address.port, log: true}, entry);
           }
           function entry() {

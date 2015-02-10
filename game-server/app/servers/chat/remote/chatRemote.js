@@ -11,7 +11,7 @@ var ChatRemote = function(app) {
  * 用户进入系统
  */
 ChatRemote.prototype.enter = function(uid, sid, cb) {
-//    console.info('enter chatRemote enter.......');
+   console.info('enter chatRemote enter.......');
 //
 //    cb();
 }

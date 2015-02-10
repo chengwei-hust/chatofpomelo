@@ -14,6 +14,7 @@ var Handler = function(app) {
 	this.app = app;
 };
 
+var handler = Handler.prototype;
 /**
  * 新创建一个群
  *
@@ -22,7 +23,7 @@ var Handler = function(app) {
  * @param  {Function} next    next step callback
  * @return {Void}
  */
-Handler.prototype.createGroup = function(msg, session, next) {
+handler.createGroup = function(msg, session, next) {
     console.info("enter createGroup................");
 
     if (!!msg.group) {
@@ -54,7 +55,7 @@ function contains(a, obj){
 }
 
 
-Handler.prototype.joinGroup = function(msg, session, next) {
+handler.joinGroup = function(msg, session, next) {
     console.info("enter joinGroup................");
 
     if (!!msg.group) {
@@ -85,12 +86,13 @@ Handler.prototype.joinGroup = function(msg, session, next) {
  * @param  {Function} next next stemp callback
  *
  */
-Handler.prototype.sendChat = function(msg, session, next) {
+handler.sendChat = function(msg, session, next) {
 
     console.info("enter sendChat................");
     console.info(msg);
     var channelService = this.app.get('channelService');
     var connectors = this.app.getServersByType('connector');
+    console.info(connectors);
 
     if (!msg.from) {
         console.info("fromUserId must exsits");
@@ -101,9 +103,12 @@ Handler.prototype.sendChat = function(msg, session, next) {
     if(!!msg.to && msg.to > 0) {
         idSequenceService.getNext('chat', function(id) {
             msg.id = id;
-
+            console.info(msg.to);
             // 拿session ID
             var res = dispatcher.dispatch(msg.to, connectors);
+
+            console.info("test......................................................................");
+            console.info(res);
 
             channelService.pushMessageByUids('chatMsg', msg, [{
                 uid: msg.to,
@@ -130,7 +135,7 @@ Handler.prototype.sendChat = function(msg, session, next) {
     next(null, {code: 200, msg: 'send chat is ok.'});
 };
 
-Handler.prototype.ack = function(msg, session, next) {
+handler.ack = function(msg, session, next) {
     console.info(msg);
 
     if(!!msg.chatType && msg.chatType == 1) {
@@ -141,7 +146,7 @@ Handler.prototype.ack = function(msg, session, next) {
     next(null, {code: 200, msg: 'ack is ok.'});
 }
 
-Handler.prototype.getUnReceivedChats = function(msg, session, next) {
+handler.getUnReceivedChats = function(msg, session, next) {
 
     var channelService = this.app.get('channelService');
     var uid = msg.uid;

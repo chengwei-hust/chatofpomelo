@@ -23,6 +23,12 @@ Handler.prototype.entry = function(msg, session, next) {
 
   //登录绑定uid到session
   session.bind(msg.uid);
+//  session.set('uid', msg.uid);
+//  session.push('uid', function(err) {
+//      if (err) {
+//          console.error('set rid for session service failed! error is : %j', err.stack);
+//      }
+//  });
 
   next(null, {code: 200, msg: 'connect to server is ok.'});
 
