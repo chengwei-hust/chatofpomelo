@@ -12,9 +12,45 @@ module.exports = function(app) {
 
 var Handler = function(app) {
 	this.app = app;
+    initGroups(app);
 };
 
 var handler = Handler.prototype;
+
+function initGroups(app) {
+    console.info("Begin initGroups................................................................");
+
+    groupsDao.getAllGroups(importGroups);
+
+    function importGroups(groups) {
+        var connectors = app.getServersByType('connector');
+        for( var i = 0; i < groups.length; i++) {
+           var channelName = groups[i].group;
+           var channelService = app.get('channelService');
+           var channel = channelService.getChannel(channelName, true);
+           var members = groups[i].members;
+
+           for( var j = 0; j < members.length; j++) {
+               console.info(dispatcher.dispatch(members[j].uid, connectors));
+               channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+           }
+       }
+    }
+
+    console.info('initGroups is ok.');
+};
+
+
+
+function contains(a, obj){
+    for(var i = 0; i < a.length; i++) {
+        if(a[i] === obj){
+            return true;
+        }
+    }
+    return false;
+}
+
 /**
  * 新创建一个群
  *
@@ -44,16 +80,6 @@ handler.createGroup = function(msg, session, next) {
     }
     next(null, {code: 200, msg: 'create group is ok.'});
 };
-
-function contains(a, obj){
-    for(var i = 0; i < a.length; i++) {
-        if(a[i] === obj){
-            return true;
-        }
-    }
-    return false;
-}
-
 
 handler.joinGroup = function(msg, session, next) {
     console.info("enter joinGroup................");

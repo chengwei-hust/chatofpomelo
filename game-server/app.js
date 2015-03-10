@@ -1,4 +1,5 @@
 var pomelo = require('pomelo');
+var groupsDao = require('./app/dao/groupsDao');
 
 /**
  * Init app for client.
@@ -36,12 +37,7 @@ app.configure('production|development', 'connector', function(){
 // start app
 app.start();
 
-loadGroups();
-
 process.on('uncaughtException', function (err) {
   console.error(' Caught exception: ' + err.stack);
 });
 
-function loadGroups() {
-    console.info("loading............");
-}

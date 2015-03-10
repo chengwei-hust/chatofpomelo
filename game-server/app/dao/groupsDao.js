@@ -8,6 +8,7 @@ var mongodbUrl = require('../util/config').mongodb.url;
 
 exports.getGroupsByUid = function(uid, callback) {
 
+    console.info(mongodbUrl);
     MongoClient.connect(mongodbUrl, function(err, db) {
         if (err) {
             console.log(err);
@@ -19,12 +20,13 @@ exports.getGroupsByUid = function(uid, callback) {
 
             results.toArray(function(err,arr){
                 if(err){
+                    console.log(err);
                     console.log("results toArray error");
                     return;
                 }
                 callback(arr);
             });
-            db.close();
+//            db.close();
 
         });
 
@@ -47,8 +49,35 @@ exports.addUser = function(uid, groupId) {
                 console.log(err);
             }
             console.info(result);
-            db.close();
+//            db.close();
         });
 
     });
 };
+
+exports.getAllGroups = function(cb) {
+
+    MongoClient.connect(mongodbUrl, function(err, db) {
+        if (err) {
+            console.log(err);
+            return console.dir(err);
+        }
+
+        var groupsTable = db.collection('groups');
+        groupsTable.find({}, {"group":1, "members":1, "_id":0}, function (err, results) {
+
+
+
+            results.toArray(function(err,arr){
+                if(err){
+                    console.log("results toArray error");
+                    return;
+                }
+                cb(arr);
+            });
+//            db.close();
+
+        });
+
+    });
+}

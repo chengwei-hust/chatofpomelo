@@ -19,7 +19,7 @@ exports.saveChat = function(param) {
                 console.log(err);
             }
             console.info(result);
-            db.close();
+//            db.close();
         });
     });
 };
@@ -39,7 +39,7 @@ exports.markReceived = function(uid, id) {
                 console.log(err);
             }
             console.info(result);
-            db.close();
+//            db.close();
         });
     });
 
@@ -56,12 +56,13 @@ exports.getUnReceivedChatsByGroups = function(groupIds, uid, callback) {
         db.collection('group_chat').find({group:{$in:groupIds}, receivedUsers:{$nin:[uid]}}, {_id:0}, function(err,result) {
             result.toArray(function (err, arr) {
                 if (err) {
+                    console.info(err);
                     console.log("results toArray error");
                     return;
                 }
                 callback(arr);
             });
-            db.close();
+//            db.close();
         });
     });
 }
