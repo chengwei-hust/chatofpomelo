@@ -2,10 +2,11 @@
  * Created by chengwei on 15-1-26.
  */
 var MongoClient = require('mongodb').MongoClient;
+var mongodbUrl = require('../util/config').mongodb.url;
 
 exports.getNextId = function(tableName, callback) {
 
-    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+    MongoClient.connect(mongodbUrl, function(err, db) {
         if (err) {
             console.log(err);
             return console.dir(err);

@@ -3,11 +3,12 @@
  */
 
 var MongoClient = require('mongodb').MongoClient;
+var mongodbUrl = require('../util/config').mongodb.url;
 
 
 exports.getGroupsByUid = function(uid, callback) {
 
-    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+    MongoClient.connect(mongodbUrl, function(err, db) {
         if (err) {
             console.log(err);
             return console.dir(err);
@@ -34,7 +35,7 @@ exports.getGroupsByUid = function(uid, callback) {
 
 exports.addUser = function(uid, groupId) {
 
-    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+    MongoClient.connect(mongodbUrl, function(err, db) {
         if (err) {
             console.log(err);
             return console.dir(err);

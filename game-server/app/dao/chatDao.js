@@ -2,12 +2,13 @@
  * Created by chengwei on 15-1-22.
  */
 var MongoClient = require('mongodb').MongoClient;
+var mongodbUrl = require('../util/config').mongodb.url;
 
 exports.saveChat = function(param) {
 
     console.info("save chat................");
 
-    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+    MongoClient.connect(mongodbUrl, function(err, db) {
         if (err) {
             console.log(err);
             return console.dir(err);
@@ -27,7 +28,7 @@ exports.markReceived = function(uid, id) {
 
     console.info("mark read...............");
 
-    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+    MongoClient.connect(mongodbUrl, function(err, db) {
         if (err) {
             console.log(err);
             return console.dir(err);
@@ -46,7 +47,7 @@ exports.markReceived = function(uid, id) {
 
 exports.getUnReceivedChats = function(uid, callback) {
     console.info("getUnReceivedChats......");
-    MongoClient.connect("mongodb://localhost:27017/wm_main", function(err, db) {
+    MongoClient.connect(mongodbUrl, function(err, db) {
         if (err) {
             console.log(err);
             return console.dir(err);

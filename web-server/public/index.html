@@ -40,7 +40,7 @@
       var port = "3000";
 
       function gate() {
-          var fromUserId = $("#uid").attr("value");
+          var fromUserId = parseInt($("#uid").attr("value"));
           pomelo.init({host: host, port: port, log: true}, queryEntry);
           function queryEntry() {
               pomelo.request("gate.gateHandler.queryEntry", {uid: fromUserId}, requestEntry);
@@ -57,8 +57,8 @@
       }
 
       function sendChat() {
-          var fromUserId = $("#uid").attr("value");
-          var toUserId = $("#toUid").attr("value");
+          var fromUserId = parseInt($("#uid").attr("value"));
+          var toUserId = parseInt($("#toUid").attr("value"));
           var content = $("#msg").attr("value");
           pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, to:toUserId, msg:{type:'txt', content:content}}, function(data) {
 
@@ -66,7 +66,7 @@
       }
 
       function sendGroupChat() {
-          var fromUserId = $("#uid").attr("value");
+          var fromUserId = parseInt($("#uid").attr("value"));
           var groupId = parseInt($("#groupId").attr("value"));
           var content = $("#msg").attr("value");
           pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, group:groupId, msg:{type:'txt', content:content}}, function(data) {

@@ -19,10 +19,7 @@ var handler = Handler.prototype;
  *
  */
 handler.queryEntry = function(msg, session, next) {
-    console.info("enter queryEntry.......");
-    console.info("enter uid.......");
 	var uid = msg.uid;
-    console.info(uid);
 	if(!uid) {
 		next(null, {
 			code: 500
@@ -40,8 +37,6 @@ handler.queryEntry = function(msg, session, next) {
 	}
 	// select connector
 	var res = dispatcher.dispatch(uid, connectors);
-    console.info(uid);
-    console.info(res);
 	next(null, {
 		code: 200,
 		host: res.host,
