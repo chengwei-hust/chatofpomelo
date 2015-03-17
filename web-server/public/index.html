@@ -60,7 +60,7 @@
           var fromUserId = parseInt($("#uid").attr("value"));
           var toUserId = parseInt($("#toUid").attr("value"));
           var content = $("#msg").attr("value");
-          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, to:toUserId, msg:{type:'txt', content:content}}, function(data) {
+          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, to:toUserId, zhaopin:true, msg:{type:'txt', content:content}}, function(data) {
 
           });
       }
