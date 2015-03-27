@@ -26,7 +26,7 @@ exports.getGroupsByUid = function(uid, callback) {
                 }
                 callback(arr);
             });
-//            db.close();
+            db.close();
 
         });
 
@@ -49,7 +49,7 @@ exports.addUser = function(uid, groupId) {
                 console.log(err);
             }
             console.info(result);
-//            db.close();
+            db.close();
         });
 
     });
@@ -75,7 +75,7 @@ exports.getAllGroups = function(cb) {
                 }
                 cb(arr);
             });
-//            db.close();
+            db.close();
 
         });
 
