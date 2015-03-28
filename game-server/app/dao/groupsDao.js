@@ -22,11 +22,13 @@ exports.getGroupsByUid = function(uid, callback) {
                 if(err){
                     console.log(err);
                     console.log("results toArray error");
+    //                db.close();
                     return;
                 }
                 callback(arr);
+                db.close();
             });
-            db.close();
+
 
         });
 
@@ -71,11 +73,13 @@ exports.getAllGroups = function(cb) {
             results.toArray(function(err,arr){
                 if(err){
                     console.log("results toArray error");
+//                  db.close();
                     return;
                 }
                 cb(arr);
+                db.close();
             });
-            db.close();
+
 
         });
 

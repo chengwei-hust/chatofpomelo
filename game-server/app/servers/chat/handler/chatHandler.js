@@ -34,6 +34,7 @@ function initGroups(app) {
                console.info(dispatcher.dispatch(members[j].uid, connectors));
                channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
            }
+           console.info(channel);
        }
     }
 
@@ -61,21 +62,23 @@ function contains(a, obj){
  */
 handler.createGroup = function(msg, session, next) {
     console.info("enter createGroup................");
+    var connectors = this.app.getServersByType('connector');
 
     if (!!msg.group) {
         var channelName = msg.group;
         var channelService = this.app.get('channelService');
         var channel = channelService.getChannel(channelName, true);
 
-        groupsDao.addUser(msg.uid, msg.group);
-
-        if( !!channel) {
-            var members = channel.getMembers();
-            console.info(members);
-
-            if(!contains(members,msg.uid)) {
-                channel.add(msg.uid, session.frontendId);
+        if(!!msg.members) {
+            var members = msg.members;
+            var channelMembers = channel.getMembers();
+            for (var j = 0; j < members.length; j++) {
+                if(!contains(channelMembers, members[j].uid)) {
+                    console.info(dispatcher.dispatch(members[j].uid, connectors));
+                    channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+                }
             }
+            console.info(channel);
         }
     }
     next(null, {code: 200, msg: 'create group is ok.'});
@@ -150,6 +153,7 @@ handler.sendChat = function(msg, session, next) {
             msg.id = id;
             var channelName = msg.group;
             var channel = channelService.getChannel(channelName, true);
+            console.info(channel);
             channel.pushMessage('chatMsg', msg);
             groupChatDao.saveChat(msg);
         });

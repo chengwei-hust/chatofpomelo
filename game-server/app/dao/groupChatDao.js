@@ -58,11 +58,13 @@ exports.getUnReceivedChatsByGroups = function(groupIds, uid, callback) {
                 if (err) {
                     console.info(err);
                     console.log("results toArray error");
+//                    db.close();
                     return;
                 }
                 callback(arr);
+                db.close();
             });
-            db.close();
+
         });
     });
 }
