@@ -4,7 +4,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var mongodbUrl = require('../util/config').mongodb.url;
 
-exports.saveChat = function(param) {
+exports.saveChat = function(param, pushMsg) {
 
     console.info("save group chat................");
 
@@ -18,7 +18,7 @@ exports.saveChat = function(param) {
             if (err) {
                 console.log(err);
             }
-            console.info(result);
+            pushMsg();
             db.close();
         });
     });

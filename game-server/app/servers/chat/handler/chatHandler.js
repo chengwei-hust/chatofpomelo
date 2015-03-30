@@ -19,22 +19,26 @@ var handler = Handler.prototype;
 
 function initGroups(app) {
     console.info("Begin initGroups................................................................");
-
     groupsDao.getAllGroups(importGroups);
 
     function importGroups(groups) {
         var connectors = app.getServersByType('connector');
         for( var i = 0; i < groups.length; i++) {
            var channelName = groups[i].group;
-           var channelService = app.get('channelService');
-           var channel = channelService.getChannel(channelName, true);
+ //          var channelService = app.get('channelService');
+           var globalChannelService = app.get('globalChannelService');
+
+
+ //          var channel = channelService.getChannel(channelName, true);
            var members = groups[i].members;
 
            for( var j = 0; j < members.length; j++) {
                console.info(dispatcher.dispatch(members[j].uid, connectors));
-               channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+ //              channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+
+               globalChannelService.add(channelName, members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
            }
-           console.info(channel);
+//           console.info(channel);
        }
     }
 
@@ -66,19 +70,21 @@ handler.createGroup = function(msg, session, next) {
 
     if (!!msg.group) {
         var channelName = msg.group;
-        var channelService = this.app.get('channelService');
-        var channel = channelService.getChannel(channelName, true);
+//        var channelService = this.app.get('channelService');
+        var globalChannelService = this.app.get('globalChannelService');
+//        var channel = channelService.getChannel(channelName, true);
 
         if(!!msg.members) {
             var members = msg.members;
-            var channelMembers = channel.getMembers();
+ //           var channelMembers = channel.getMembers();
             for (var j = 0; j < members.length; j++) {
-                if(!contains(channelMembers, members[j].uid)) {
+//                if(!contains(channelMembers, members[j].uid)) {
                     console.info(dispatcher.dispatch(members[j].uid, connectors));
-                    channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
-                }
+//                    channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+                    globalChannelService.add(channelName, members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+//                }
             }
-            console.info(channel);
+//            console.info(channel);
         }
     }
     next(null, {code: 200, msg: 'create group is ok.'});
@@ -120,6 +126,7 @@ handler.sendChat = function(msg, session, next) {
     console.info("enter sendChat................");
     console.info(msg);
     var channelService = this.app.get('channelService');
+    var globalChannelService = this.app.get('globalChannelService');
     var connectors = this.app.getServersByType('connector');
     console.info(connectors);
 
@@ -152,10 +159,15 @@ handler.sendChat = function(msg, session, next) {
         idSequenceService.getNext('chat', function(id) {
             msg.id = id;
             var channelName = msg.group;
-            var channel = channelService.getChannel(channelName, true);
-            console.info(channel);
-            channel.pushMessage('chatMsg', msg);
-            groupChatDao.saveChat(msg);
+//            var channel = channelService.getChannel(channelName, true);
+//            console.info(channel);
+//            channel.pushMessage('chatMsg', msg);
+            groupChatDao.saveChat(msg, pushMsg);
+
+            function pushMsg() {
+                globalChannelService.pushMessage('connector', 'chatMsg', msg, channelName);
+            }
+
         });
     }
 

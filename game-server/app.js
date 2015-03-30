@@ -1,5 +1,5 @@
 var pomelo = require('pomelo');
-var groupsDao = require('./app/dao/groupsDao');
+var globalchannelPlugin = require('pomelo-globalchannel-plugin');
 
 /**
  * Init app for client.
@@ -8,7 +8,7 @@ var app = pomelo.createApp();
 app.set('name', 'chatofpomelo');
 
 // app configuration
-app.configure('production|development', 'connector', function(){
+app.configure('production|development', 'gate', function(){
     app.set('connectorConfig',
         {
             connector : pomelo.connectors.sioconnector,
@@ -32,6 +32,14 @@ app.configure('production|development', 'connector', function(){
             heartbeatTimeout : 60,
             heartbeatInterval : 25
         });
+});
+
+app.use(globalchannelPlugin, {
+    globalChannel: {
+        host: 'a5.womi.cn',
+        port: 6379
+    }
+
 });
 
 // start app
