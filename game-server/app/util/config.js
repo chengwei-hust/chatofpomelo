@@ -1,26 +1,32 @@
-var env = 'development';
+var env = 'local';
 
 var settings = {
 
-    development: {
+    local: {
         mongodb: {
-            host: "127.0.0.1",
+            host: "j6.womi.cn",
             port: "27017",
-            database: "wm_main"
+            database: "wm_stock"
+        }
+    },
+    betaTest: {
+        mongodb: {
+            host: "10.254.160.86",
+            port: "27017",
+            database: "wm_stock"
         }
     },
     product: {
         mongodb: {
-            host: "60.55.37.68",
+            host: "10.254.190.48",
             port: "27017",
-            database: "wm_main"
+            database: "wm_stock"
         }
     }
 
 }
 
-var c = env == 'development' ? settings[env] :settings['product'],
-    mongo = c.mongodb;
+var c = settings[env], mongo = c.mongodb;
 c.mongodb.url = "mongodb://" + mongo.host + ":" + mongo.port + "/" + mongo.database;
 
 module.exports = c;

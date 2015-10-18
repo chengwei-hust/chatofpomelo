@@ -1,5 +1,5 @@
 {
-  "development":{
+  "local":{
     "connector": [
         {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true},
         {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3011, "frontend": true},
@@ -15,23 +15,39 @@
         {"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 3000, "frontend": true}
     ]
   },
-  "production":{
+  "betaTest":{
     "connector": [
-        {"id": "connector-server-1", "host": "im.womi.cn", "port": 3150, "clientPort": 3010, "frontend": true},
-        {"id": "connector-server-2", "host": "im.womi.cn", "port": 3151, "clientPort": 3011, "frontend": true},
-        {"id": "connector-server-3", "host": "im.womi.cn", "port": 3152, "clientPort": 3012, "frontend": true},
-        {"id": "connector-server-4", "host": "im.womi.cn", "port": 3153, "clientPort": 3013, "frontend": true},
-        {"id": "connector-server-5", "host": "im.womi.cn", "port": 3154, "clientPort": 3014, "frontend": true}
+        {"id": "connector-server-1", "host": "123.59.14.213", "port": 3150, "clientPort": 3010, "frontend": true},
+        {"id": "connector-server-2", "host": "123.59.14.213", "port": 3151, "clientPort": 3011, "frontend": true},
+        {"id": "connector-server-3", "host": "123.59.14.213", "port": 3152, "clientPort": 3012, "frontend": true},
+        {"id": "connector-server-4", "host": "123.59.14.213", "port": 3153, "clientPort": 3013, "frontend": true},
+        {"id": "connector-server-5", "host": "123.59.14.213", "port": 3154, "clientPort": 3014, "frontend": true}
+
     ],
     "chat":[
-        {"id":"chat-server-1", "host":"im.womi.cn", "port":6050},
-        {"id":"chat-server-2", "host":"im.womi.cn", "port":6051},
-        {"id":"chat-server-3", "host":"im.womi.cn", "port":6052},
-        {"id":"chat-server-4", "host":"im.womi.cn", "port":6053},
-        {"id":"chat-server-5", "host":"im.womi.cn", "port":6054}
+        {"id":"chat-server-1", "host":"123.59.14.213", "port":6050}
     ],
     "gate":[
-        {"id": "gate-server-1", "host": "im.womi.cn", "clientPort": 3000, "frontend": true}
+        {"id": "gate-server-1", "host": "123.59.14.213", "clientPort": 3000, "frontend": true}
+    ]
+  },
+  "production":{
+    "connector": [
+        {"id": "connector-server-1", "host": "j3.womi.cn", "port": 3150, "clientPort": 3010, "frontend": true},
+        {"id": "connector-server-2", "host": "j3.womi.cn", "port": 3151, "clientPort": 3011, "frontend": true},
+        {"id": "connector-server-3", "host": "j3.womi.cn", "port": 3152, "clientPort": 3012, "frontend": true},
+        {"id": "connector-server-4", "host": "j3.womi.cn", "port": 3153, "clientPort": 3013, "frontend": true},
+        {"id": "connector-server-5", "host": "j3.womi.cn", "port": 3154, "clientPort": 3014, "frontend": true}
+    ],
+    "chat":[
+        {"id":"chat-server-1", "host":"j3.womi.cn", "port":6050},
+        {"id":"chat-server-2", "host":"j3.womi.cn", "port":6051},
+        {"id":"chat-server-3", "host":"j3.womi.cn", "port":6052},
+        {"id":"chat-server-4", "host":"j3.womi.cn", "port":6053},
+        {"id":"chat-server-5", "host":"j3.womi.cn", "port":6054}
+    ],
+    "gate":[
+        {"id": "gate-server-1", "host": "j3.womi.cn", "clientPort": 3000, "frontend": true}
     ]
   }
 }
