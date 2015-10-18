@@ -1,12 +1,16 @@
-var env = 'local';
+var env = 'development';
 
 var settings = {
 
-    local: {
+    development: {
         mongodb: {
             host: "j6.womi.cn",
             port: "27017",
             database: "wm_stock"
+        },
+        redis:{
+            host: "j6.womi.cn",
+            port: "6379"
         }
     },
     betaTest: {
@@ -14,6 +18,10 @@ var settings = {
             host: "10.254.160.86",
             port: "27017",
             database: "wm_stock"
+        },
+        redis:{
+            host: "10.254.160.86",
+            port: "6379"
         }
     },
     product: {
@@ -21,6 +29,10 @@ var settings = {
             host: "10.254.190.48",
             port: "27017",
             database: "wm_stock"
+        },
+        redis:{
+            host: "10.254.191.47",
+            port: "6379"
         }
     }
 
