@@ -4,12 +4,12 @@ var settings = {
 
     development: {
         mongodb: {
-            host: "j6.womi.cn",
+            host: "127.0.0.1",
             port: "27017",
             database: "wm_stock"
         },
         redis:{
-            host: "j6.womi.cn",
+            host: "127.0.0.1",
             port: "6379"
         }
     },

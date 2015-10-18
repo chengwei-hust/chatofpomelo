@@ -16,11 +16,11 @@ app.configure('production|development|betaTest', 'gate', function(){
             heartbeat : 3,
             useDict : true,
             useProtobuf : true,
-            ssl: {
-                type: 'wss',
-                key: fs.readFileSync('../shared/server.key'),
-                cert: fs.readFileSync('../shared/server.crt')
-            }
+//            ssl: {
+//                type: 'wss',
+//                key: fs.readFileSync('../shared/server.key'),
+//                cert: fs.readFileSync('../shared/server.crt')
+//            }
         });
 });
 
@@ -31,11 +31,11 @@ app.configure('production|development|betaTest', 'connector', function(){
             heartbeat : 3,
             useDict : true,
             useProtobuf : true,
-            ssl: {
-                type: 'wss',
-                key: fs.readFileSync('../shared/server.key'),
-                cert: fs.readFileSync('../shared/server.crt')
-            }
+//            ssl: {
+//                type: 'wss',
+//                key: fs.readFileSync('../shared/server.key'),
+//                cert: fs.readFileSync('../shared/server.crt')
+//            }
         });
 });
 
