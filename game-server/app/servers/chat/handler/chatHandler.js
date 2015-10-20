@@ -23,6 +23,11 @@ function initGroups(app) {
 
     function importGroups(groups) {
         var connectors = app.getServersByType('connector');
+        if(!!app) {
+            console.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        } else {
+            console.info("bbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+        }
         for( var i = 0; i < groups.length; i++) {
            var channelName = groups[i].group;
  //          var channelService = app.get('channelService');
@@ -73,7 +78,7 @@ handler.createGroup = function(msg, session, next) {
 //        var channelService = this.app.get('channelService');
         var globalChannelService = this.app.get('globalChannelService');
 //        var channel = channelService.getChannel(channelName, true);
-
+        groupsDao.addUser(msg.uid, msg.group);
         if(!!msg.members) {
             var members = msg.members;
  //           var channelMembers = channel.getMembers();
@@ -92,21 +97,27 @@ handler.createGroup = function(msg, session, next) {
 
 handler.joinGroup = function(msg, session, next) {
     console.info("enter joinGroup................");
+    var connectors = this.app.getServersByType('connector');
 
     if (!!msg.group) {
         var channelName = msg.group;
-        var channelService = this.app.get('channelService');
-        var channel = channelService.getChannel(channelName, true);
-
+//        var channelService = this.app.get('channelService');
+        var globalChannelService = this.app.get('globalChannelService');
+//        var channel = channelService.getChannel(channelName, true);
         groupsDao.addUser(msg.uid, msg.group);
 
-        if( !!channel) {
-            var members = channel.getMembers();
-            console.info(members);
-
-            if(!contains(members,msg.uid)) {
-                channel.add(msg.uid, session.frontendId);
-            }
+        if(!!msg.uid) {
+            console.info(".aaaaaaaaaaaa..............................................");
+            var member = msg.uid;
+            //           var channelMembers = channel.getMembers();
+//            for (var j = 0; j < members.length; j++) {
+//                if(!contains(channelMembers, members[j].uid)) {
+                console.info(dispatcher.dispatch(member, connectors));
+                console.info("..............................................................");
+//                    channel.add(members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+                globalChannelService.add(channelName, member, dispatcher.dispatch(member, connectors).id);
+//                }
+//            }
         }
     }
     next(null, {code: 200, msg: 'join group is ok.'});

@@ -19,17 +19,11 @@
         require('boot');
     </script>
     <script src="js/client.js">
-
-    </script>
-
-    <script src="js/lib/socket.io.js">
-    </script>
-    <script src="js/lib/pomeloclient.js">
     </script>
 
     <script type="text/javascript">
         var pomelo = window.pomelo;
-        var host = "127.0.0.1";
+        var host = window.location.hostname;
         var port = "3010";
 
         function connect() {

@@ -69,7 +69,6 @@ exports.getAllGroups = function(cb) {
         groupsTable.find({}, {"group":1, "members":1, "_id":0}, function (err, results) {
 
 
-
             results.toArray(function(err,arr){
                 if(err){
                     console.log("results toArray error");
