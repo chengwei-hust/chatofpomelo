@@ -19,6 +19,16 @@ var handler = Handler.prototype;
  *
  */
 handler.queryEntry = function(msg, session, next) {
+
+    var access_token = msg.access_token;
+    if (!access_token) {
+        next(null, {
+            code: 20000,
+            msg:"access_token无效或者已过期，请出重新获取"
+        });
+        return;
+    }
+
 	var uid = msg.uid;
 	if(!uid) {
 		next(null, {
