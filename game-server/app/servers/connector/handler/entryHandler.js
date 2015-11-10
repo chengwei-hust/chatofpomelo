@@ -17,14 +17,32 @@ var Handler = function(app) {
  * @return {Void}
  */
 Handler.prototype.entry = function(msg, session, next) {
-  //登录绑定uid到session
-  session.bind(msg.uid);
-
-    // put user into channel
-//  this.app.rpc.chat.chatRemote.enter(session, msg.uid, this.app.get('serverId'),function(){
-//        next(null, {code: 200, msg: 'connect to server is ok.'});
-//  });
-
+    var guest = msg.guest;
+    if(!guest) {
+        next(null, {
+            code: 10000,
+            msg:"请传入是否游客身份参数guest"
+        });
+        return;
+    }
+    var access_token = msg.access_token;
+    if (!access_token) {
+        next(null, {
+            code: 20000,
+            msg:"access_token无效或者已过期，请出重新获取"
+        });
+        return;
+    }
+    var uid = ticketService.getUserIdByTicket(access_token, guest);
+    if(!uid) {
+        next(null, {
+            code: 20000,
+            msg:"access_token无效或者已过期，请出重新获取"
+        });
+        return;
+    }
+    //登录绑定uid到session
+    session.bind(uid);
     next(null, {code: 200, msg: 'connect to server is ok.'});
 };
 
