@@ -1,4 +1,4 @@
-
+var ticketService = require('../../../service/ticketService');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -43,7 +43,7 @@ Handler.prototype.entry = function(msg, session, next) {
     }
     //登录绑定uid到session
     session.bind(uid);
-    next(null, {code: 200, msg: 'connect to server is ok.'});
+    next(null, {code: 200, msg: 'connect to server is ok.', uid: uid});
 };
 
 

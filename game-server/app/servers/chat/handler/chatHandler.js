@@ -109,7 +109,7 @@ handler.sendChat = function(msg, session, next) {
                 uid: msg.to,
                 sid: res.id
             }]);
-            chatDao.saveChat(msg);
+ //           chatDao.saveChat(msg);
         });
 
 

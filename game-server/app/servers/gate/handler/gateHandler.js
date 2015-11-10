@@ -1,5 +1,5 @@
 var dispatcher = require('../../../util/dispatcher');
-var ticketService = require('../../../service/ticketService')
+var ticketService = require('../../../service/ticketService');
 
 module.exports = function(app) {
 	return new Handler(app);

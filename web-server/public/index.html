@@ -41,11 +41,11 @@
           }
           function requestEntry(address) {
               pomelo.disconnect();
-              pomelo.init({host: address.host, port: address.port, log: true}, entry(address.uid));
+              pomelo.init({host: address.host, port: address.port, log: true}, entry);
           }
-          function entry(uid) {
-              pomelo.request("connector.entryHandler.entry", {uid: uid, access_token: access_token, guest: guest}, function (data) {
-                  showMsg(uid);
+          function entry() {
+              pomelo.request("connector.entryHandler.entry", {uid: fromUserId, access_token: access_token, guest: guest}, function (data) {
+                  showMsg(data.uid);
               });
           }
       }
