@@ -33,9 +33,11 @@
 
       function gate() {
           var fromUserId = parseInt($("#uid").attr("value"));
+	  var access_token = $("#access_token").attr("value");
+	  var guest = $("#guest").attr("value");
           pomelo.init({host: host, port: port, log: true}, queryEntry);
           function queryEntry() {
-              pomelo.request("gate.gateHandler.queryEntry", {uid: fromUserId}, requestEntry);
+              pomelo.request("gate.gateHandler.queryEntry", {uid: fromUserId, access_token: access_token, guest: guest}, requestEntry);
           }
           function requestEntry(address) {
               pomelo.disconnect();
@@ -130,7 +132,20 @@
           </td>
       </tr>
       </div>
-
+      <div class="g-button">
+            <tr>
+                <td>
+                    access_token：<input id="access_token" type="text" placeholder="输入access_token" />
+                </td>
+            </tr>
+      </div>
+      <div class="g-button">
+            <tr>
+                <td>
+                    是否游客：<input id="guest" type="text" placeholder="输入是否游客" />
+                </td>
+            </tr>
+      </div>
       <div class="g-button">
             <tr>
                 <td>
