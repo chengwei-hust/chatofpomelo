@@ -76,10 +76,10 @@
       function showMsg(reader) {
           pomelo.on('womi.stock.msg', function(data) {
               if (!!data.to) {
-                  addMessage(data.from, data.to, data.msg.content);
+                  addMessage(data.from, data.to, data.content);
               }
               else if(!!data.group) {
-                  addGroupMessage(data.from, data.group, data.msg.content);
+                  addGroupMessage(data.from, data.group, data.content);
               }
               if(!!data.id) {
                   var chatType = !!data.group ? 1 : 0;   // 1 表示群聊  0　表示单聊
@@ -93,14 +93,14 @@
               var unReceivedGroupChats = data.unReceivedGroupChats;
               for(var i in unReceivedGroupChats) {
                   var groupChat = unReceivedGroupChats[i];
-                  addGroupMessage(groupChat.from, groupChat.group, groupChat.msg.content, new Date(groupChat.timestamp));
+                  addGroupMessage(groupChat.from, groupChat.group, groupChat.content, new Date(groupChat.timestamp));
                   ack(reader, groupChat.id, 1);
               }
 
               var unReceivedChats = data.unReceivedChats;
               for(var j in unReceivedChats) {
                   var chat = unReceivedChats[j];
-                  addMessage(chat.from, chat.to, chat.msg.content, new Date(chat.timestamp));
+                  addMessage(chat.from, chat.to, chat.content, new Date(chat.timestamp));
                   ack(reader, chat.id, 0);
               }
               $("#chatHistory").show();
