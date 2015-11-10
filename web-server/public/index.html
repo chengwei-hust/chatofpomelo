@@ -74,7 +74,7 @@
       }
 
       function showMsg(reader) {
-          pomelo.on('chatMsg', function(data) {
+          pomelo.on('womi.stock.msg', function(data) {
               if (!!data.to) {
                   addMessage(data.from, data.to, data.msg.content);
               }

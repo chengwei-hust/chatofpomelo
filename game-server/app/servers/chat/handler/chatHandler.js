@@ -1,8 +1,6 @@
-var chatRemote = require('../remote/chatRemote');
 var chatDao = require('../../../dao/chatDao');
 var groupChatDao = require('../../../dao/groupChatDao');
 var groupsDao = require('../../../dao/groupsDao');
-var idSequenceService = require('../../../service/idSequenceService');
 
 var dispatcher = require('../../../util/dispatcher');
 
@@ -26,16 +24,10 @@ function contains(a, obj){
     return false;
 }
 
-/**
- * 新创建一个群
- *
- * @param  {Object}   msg     request message
- * @param  {Object}   session current session object
- * @param  {Function} next    next step callback
- * @return {Void}
- */
-handler.createGroup = function(msg, session, next) {
-    console.info("enter createGroup................");
+
+//创建一个聊天室
+handler.createRoom = function(msg, session, next) {
+    console.info("enter createRoom................");
     var connectors = this.app.getServersByType('connector');
 
     if (!!msg.group && !!msg.uid) {
@@ -46,14 +38,15 @@ handler.createGroup = function(msg, session, next) {
         console.info(dispatcher.dispatch(creater, connectors));
         globalChannelService.add(channelName, creater, dispatcher.dispatch(creater, connectors).id);
 
-        next(null, {code: 200, msg: 'create group is ok.'});
+        next(null, {code: 200, msg: 'create room is ok.'});
     } else {
         next(null, {code: 500});
     }
 
 };
 
-handler.joinGroup = function(msg, session, next) {
+//用户进入聊天室
+handler.enterRoom = function(msg, session, next) {
     console.info("enter joinGroup................");
     var connectors = this.app.getServersByType('connector');
 
@@ -72,67 +65,36 @@ handler.joinGroup = function(msg, session, next) {
 };
 
 
-/**
- * Send messages to users
- *
- * @param {Object} msg message from client
- * @param {Object} session
- * @param  {Function} next next stemp callback
- *
- */
+//用户发送聊天内容
 handler.sendChat = function(msg, session, next) {
 
     console.info("enter sendChat................");
-    console.info(msg);
     var channelService = this.app.get('channelService');
     var globalChannelService = this.app.get('globalChannelService');
     var connectors = this.app.getServersByType('connector');
     console.info(connectors);
 
     if (!msg.from) {
-        console.info("fromUserId must exsits");
+        next(null, {code: 500, msg: 'from must be exsited.'});
         return;
     }
-
     // 单聊
     if(!!msg.to && msg.to > 0) {
-        idSequenceService.getNext('chat', function(id) {
-            msg.id = id;
-            console.info(msg.to);
-            // 拿session ID
-            var res = dispatcher.dispatch(msg.to, connectors);
-
-            console.info("test......................................................................");
-            console.info(res);
-
-            channelService.pushMessageByUids('chatMsg', msg, [{
-                uid: msg.to,
-                sid: res.id
-            }]);
- //           chatDao.saveChat(msg);
-        });
-
-
+        // 拿session ID
+        var res = dispatcher.dispatch(msg.to, connectors);
+        console.info(res);
+        channelService.pushMessageByUids('womi.stock.msg', msg, [{
+            uid: msg.to,
+            sid: res.id
+        }]);
         // 群聊
     } else if (!!msg.group && msg.group > 0) {
-        idSequenceService.getNext('chat', function(id) {
-            msg.id = id;
-            var channelName = msg.group;
-//            var channel = channelService.getChannel(channelName, true);
-//            console.info(channel);
-//            channel.pushMessage('chatMsg', msg);
-            groupChatDao.saveChat(msg, pushMsg);
-
-            function pushMsg() {
-                globalChannelService.pushMessage('connector', 'chatMsg', msg, channelName);
-            }
-
-        });
+        msg.id = id;
+        var channelName = msg.group;
+        function pushMsg() {
+            globalChannelService.pushMessage('connector', 'womi.stock.msg', msg, channelName);
+        }
     }
-
-    console.info(session);
-
-
     next(null, {code: 200, msg: 'send chat is ok.'});
 };
 
@@ -171,11 +133,7 @@ handler.getUnReceivedChats = function(msg, session, next) {
                    sid: session.frontendId
                }]);
             });
-
         });
-
-
     });
-
     next(null, {code: 200, msg: 'getUnreadChats is ok.'});
 }
