@@ -88,9 +88,8 @@ handler.sendChat = function(msg, session, next) {
             sid: res.id
         }]);
         // 群聊
-    } else if (!!msg.group && msg.group > 0) {
-        msg.id = id;
-        var channelName = msg.group;
+    } else if (!!msg.room_no && msg.room_no > 0) {
+        var channelName = msg.room_no;
         function pushMsg() {
             globalChannelService.pushMessage('connector', 'womi.stock.msg', msg, channelName);
         }
