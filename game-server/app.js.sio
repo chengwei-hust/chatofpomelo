@@ -1,13 +1,16 @@
+var fs = require('fs');
 var pomelo = require('pomelo');
-
+var globalchannelPlugin = require('pomelo-globalchannel-plugin');
+var initChannels = require ('./app/components/ChatChannels');
+var redisConfig = require('./app/util/config').redis;
 /**
  * Init app for client.
  */
 var app = pomelo.createApp();
-app.set('name', '$');
+app.set('name', 'chatofpomelo');
 
 // app configuration
-app.configure('production|development', 'connector', function(){
+app.configure('production|development|betaTest', 'gate', function(){
   app.set('connectorConfig',
     {
       connector : pomelo.connectors.sioconnector,
@@ -18,6 +21,26 @@ app.configure('production|development', 'connector', function(){
       heartbeatTimeout : 60,
       heartbeatInterval : 25
     });
+});
+
+app.configure('production|development|betaTest', 'connector', function(){
+  app.set('connectorConfig',
+    {
+      connector : pomelo.connectors.sioconnector,
+      //websocket, htmlfile, xhr-polling, jsonp-polling, flashsocket
+      transports : ['websocket'],
+      heartbeats : true,
+      closeTimeout : 60,
+      heartbeatTimeout : 60,
+      heartbeatInterval : 25
+    });
+});
+
+app.use(globalchannelPlugin, {
+    globalChannel: {
+        host: redisConfig.host,
+        port: redisConfig.port
+    }
 });
 
 // start app
