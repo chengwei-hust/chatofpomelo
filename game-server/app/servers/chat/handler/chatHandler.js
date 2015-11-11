@@ -46,23 +46,23 @@ handler.createRoom = function(msg, session, next) {
 };
 
 //用户进入聊天室
-handler.enterRoom = function(msg, session, next) {
-    console.info("enter joinGroup................");
+handler.loginRoom = function(msg, session, next) {
+    console.info("enter loginRoom................");
     var connectors = this.app.getServersByType('connector');
 
-    if (!!msg.group && !!msg.uid) {
-        var channelName = msg.group;
-        var member = msg.uid;
-        groupsDao.addUser(member, channelName);
+    if (!!msg.room_no && !!msg.user_id) {
+        var channelName = msg.room_no;
+        var member = msg.user_id;
         var globalChannelService = this.app.get('globalChannelService');
         console.info(dispatcher.dispatch(member, connectors));
         globalChannelService.add(channelName, member, dispatcher.dispatch(member, connectors).id);
 
-        next(null, {code: 200, msg: 'join group is ok.'});
+        next(null, {code: 200, msg: 'login room is ok.'});
     } else {
         next(null, {code: 500});
     }
 };
+
 
 
 //用户发送聊天内容
