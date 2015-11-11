@@ -90,9 +90,7 @@ handler.sendChat = function(msg, session, next) {
         // 群聊
     } else if (!!msg.room_no && msg.room_no > 0) {
         var channelName = msg.room_no;
-        function pushMsg() {
-            globalChannelService.pushMessage('connector', 'womi.stock.msg', msg, channelName);
-        }
+        globalChannelService.pushMessage('connector', 'womi.stock.msg', msg, channelName);
     }
     next(null, {code: 200, msg: 'send chat is ok.'});
 };
