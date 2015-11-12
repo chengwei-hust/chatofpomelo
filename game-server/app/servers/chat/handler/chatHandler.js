@@ -24,27 +24,6 @@ function contains(a, obj){
     return false;
 }
 
-
-//创建一个聊天室
-handler.createRoom = function(msg, session, next) {
-    console.info("enter createRoom................");
-    var connectors = this.app.getServersByType('connector');
-
-    if (!!msg.group && !!msg.uid) {
-        var channelName = msg.group;
-        var creater = msg.uid;
-        groupsDao.addUser(creater, channelName);
-        var globalChannelService = this.app.get('globalChannelService');
-        console.info(dispatcher.dispatch(creater, connectors));
-        globalChannelService.add(channelName, creater, dispatcher.dispatch(creater, connectors).id);
-
-        next(null, {code: 200, msg: 'create room is ok.'});
-    } else {
-        next(null, {code: 500});
-    }
-
-};
-
 //用户进入聊天室
 handler.loginRoom = function(msg, session, next) {
     console.info("enter loginRoom................");
@@ -62,6 +41,27 @@ handler.loginRoom = function(msg, session, next) {
         next(null, {code: 500});
     }
 };
+
+//用户离开聊天室
+handler.logoutRoom = function(msg, session, next) {
+    console.info("enter logoutRoom................");
+    var connectors = this.app.getServersByType('connector');
+
+    if (!!msg.group && !!msg.uid) {
+        var channelName = msg.group;
+        var creater = msg.uid;
+        groupsDao.addUser(creater, channelName);
+        var globalChannelService = this.app.get('globalChannelService');
+        console.info(dispatcher.dispatch(creater, connectors));
+        globalChannelService.add(channelName, creater, dispatcher.dispatch(creater, connectors).id);
+
+        next(null, {code: 200, msg: 'create room is ok.'});
+    } else {
+        next(null, {code: 500});
+    }
+
+};
+
 
 
 
@@ -88,8 +88,8 @@ handler.sendChat = function(msg, session, next) {
             sid: res.id
         }]);
         // 群聊
-    } else if (!!msg.room_no && msg.room_no > 0) {
-        var channelName = msg.room_no;
+    } else if (!!msg.roomno && msg.roomno > 0) {
+        var channelName = msg.roomno;
         globalChannelService.pushMessage('connector', 'womi.stock.msg', msg, channelName);
     }
     next(null, {code: 200, msg: 'send chat is ok.'});
@@ -104,33 +104,4 @@ handler.ack = function(msg, session, next) {
         chatDao.markReceived(msg.uid, msg.id);
     }
     next(null, {code: 200, msg: 'ack is ok.'});
-}
-
-handler.getUnReceivedChats = function(msg, session, next) {
-
-    var channelService = this.app.get('channelService');
-    var uid = msg.uid;
-    console.info(msg);
-
-    groupsDao.getGroupsByUid(uid, function(groups) {
-        var groupIds = [];
-        for (var i in groups) {
-           console.info(groups[i]);
-            groupIds.push(groups[i].group);
-        }
-        groupChatDao.getUnReceivedChatsByGroups(groupIds, uid, function(groupChats) {
-            var result = {};
-            result.unReceivedGroupChats = groupChats;
-            chatDao.getUnReceivedChats(uid, function(chats) {
-               result.unReceivedChats = chats;
-               console.info(result);
-
-               channelService.pushMessageByUids('unReceivedMsg', result, [{
-                   uid: uid,
-                   sid: session.frontendId
-               }]);
-            });
-        });
-    });
-    next(null, {code: 200, msg: 'getUnreadChats is ok.'});
 }
