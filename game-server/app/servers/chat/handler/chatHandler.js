@@ -47,15 +47,14 @@ handler.logoutRoom = function(msg, session, next) {
     console.info("enter logoutRoom................");
     var connectors = this.app.getServersByType('connector');
 
-    if (!!msg.group && !!msg.uid) {
-        var channelName = msg.group;
-        var creater = msg.uid;
-        groupsDao.addUser(creater, channelName);
+    if (!!msg.room_no && !!msg.user_id) {
+        var channelName = msg.room_no;
+        var member = msg.user_id;
         var globalChannelService = this.app.get('globalChannelService');
-        console.info(dispatcher.dispatch(creater, connectors));
-        globalChannelService.add(channelName, creater, dispatcher.dispatch(creater, connectors).id);
+        console.info(dispatcher.dispatch(member, connectors));
+        globalChannelService.leave(channelName, member, dispatcher.dispatch(member, connectors).id);
 
-        next(null, {code: 200, msg: 'create room is ok.'});
+        next(null, {code: 200, msg: 'logout room is ok.'});
     } else {
         next(null, {code: 500});
     }
