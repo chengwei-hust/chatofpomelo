@@ -20,7 +20,7 @@ var settings = {
             database: "wm_stock"
         },
         redis:{
-            host: "10.254.160.86",
+            host: "127.0.0.1",
             port: "6379"
         }
     },
@@ -31,7 +31,7 @@ var settings = {
             database: "wm_stock"
         },
         redis:{
-            host: "10.254.191.47",
+            host: "127.0.0.1",
             port: "6379"
         }
     }
