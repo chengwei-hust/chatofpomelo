@@ -53,7 +53,12 @@ function initChannels(self) {
                         function importGroupUsers(channelName, users) {
                             if (!!users) {
                                 for (var j = 0; j < users.length; j++) {
-                                    globalChannelService.add(channelName, users[j].user_id, dispatcher.dispatch(users[j].user_id, connectors).id);
+                                    if (!!users[j].user_id && users[j].user_id > 0) {
+                                        globalChannelService.add(channelName, users[j].user_id, dispatcher.dispatch(users[j].user_id, connectors).id);
+                                    }
+                                    if (!!users[j].guest_id && users[j].guest_id > 0) {
+                                        globalChannelService.add(channelName, users[j].guest_id, dispatcher.dispatch(users[j].guest_id, connectors).id);
+                                    }
                                 }
                             }
                         }
