@@ -56,17 +56,18 @@ function initChannels(self) {
                                     globalChannelService.add(channelName, users[j].user_id, dispatcher.dispatch(users[j].user_id, connectors).id);
                                 }
                             }
+                        }
                     }
                 }
                 console.info('Init Channels is ok.')
             }
         }
     }
-};
+}
 
 function destroyChannels(self) {
     var connectors = self.app.getServersByType('connector');
-    if(connectors.length == 5) {
+    if (connectors.length == 5) {
         console.info("Begin remove Channels................................................................");
         redisClient.keys('POMELO:CHANNEL:*', function (err, response) {
             if (err) console.error(err);
@@ -78,4 +79,4 @@ function destroyChannels(self) {
         });
         console.info('Remove Channels is ok.')
     }
-};
+}
