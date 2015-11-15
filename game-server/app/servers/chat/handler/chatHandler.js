@@ -1,6 +1,5 @@
 var chatDao = require('../../../dao/chatDao');
 var groupChatDao = require('../../../dao/groupChatDao');
-var groupsDao = require('../../../dao/groupsDao');
 
 var dispatcher = require('../../../util/dispatcher');
 

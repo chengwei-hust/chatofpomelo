@@ -34,6 +34,7 @@ app.configure('production|development|betaTest', 'connector', function(){
       heartbeatTimeout : 60,
       heartbeatInterval : 25
     });
+   app.load (initChannels, null);
 });
 
 app.use(globalchannelPlugin, {

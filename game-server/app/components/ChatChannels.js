@@ -39,18 +39,24 @@ ChatChannels.prototype.stop = function(force, cb) {
 function initChannels(self) {
     var connectors = self.app.getServersByType('connector');
     if(connectors.length == 5) {
-        groupsDao.getAllGroups(importGroupToChannels);
+        groupsDao.getAllGroups(handleGroups);
 
-        function importGroupToChannels(groups) {
+        function handleGroups(groups) {
             if (!!groups) {
                 console.info("Begin init Channels................................................................");
                 var globalChannelService = self.app.get('globalChannelService');
                 for (var i = 0; i < groups.length; i++) {
-                    var channelName = groups[i].group;
-                    var members = groups[i].members;
-                    if (!!members)
-                        for (var j = 0; j < members.length; j++)
-                            globalChannelService.add(channelName, members[j].uid, dispatcher.dispatch(members[j].uid, connectors).id);
+                    var channelName = groups[i].room_no;
+                    if (!!channelName && channelName > 0) {
+                        groupsDao.getGroupUsers(channelName, importGroupUsers);
+
+                        function importGroupUsers(users) {
+                            if (!!users) {
+                                for (var j = 0; j < users.length; j++) {
+                                    globalChannelService.add(channelName, users[j].user_id, dispatcher.dispatch(users[j].user_id, connectors).id);
+                                }
+                            }
+                    }
                 }
                 console.info('Init Channels is ok.')
             }

@@ -2,9 +2,6 @@
  * Created by chengwei on 15-1-30.
  */
 
-var groupsDao = require('../dao/groupsDao');
-
-
 exports.getUserIdByTicket = function(access_token, isGuest) {
 
     var userId = 0;
