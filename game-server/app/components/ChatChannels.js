@@ -50,7 +50,7 @@ function initChannels(self) {
                     if (!!channelName && channelName > 0) {
                         groupsDao.getGroupUsers(channelName, importGroupUsers);
 
-                        function importGroupUsers(users) {
+                        function importGroupUsers(channelName, users) {
                             if (!!users) {
                                 for (var j = 0; j < users.length; j++) {
                                     globalChannelService.add(channelName, users[j].user_id, dispatcher.dispatch(users[j].user_id, connectors).id);

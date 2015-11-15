@@ -51,7 +51,7 @@ exports.getGroupUsers = function(room_no, cb) {
 //                  db.close();
                     return;
                 }
-                cb(arr);
+                cb(room_no, arr);
                 db.close();
             });
 
