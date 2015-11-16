@@ -28,7 +28,7 @@ app.configure('production|development|betaTest', 'connector', function(){
             useDict : true,
             useProtobuf : true
         });
-//    app.load (initChannels, null);
+    app.load (initChannels, null);
 });
 
 
