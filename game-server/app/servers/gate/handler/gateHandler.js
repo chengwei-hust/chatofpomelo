@@ -22,7 +22,9 @@ var handler = Handler.prototype;
 handler.queryEntry = function(msg, session, next) {
 
     var guest = msg.guest;
-    if(!!guest) {
+    console.info(guest);
+    if(!guest) {
+        console.info(guest);
         next(null, {
             code: 10000,
             msg:"请传入是否游客身份参数guest"
@@ -30,7 +32,7 @@ handler.queryEntry = function(msg, session, next) {
         return;
     }
     var access_token = msg.access_token;
-    if (!!access_token) {
+    if (!access_token) {
         next(null, {
             code: 20000,
             msg:"access_token无效或者已过期，请出重新获取"
@@ -38,7 +40,7 @@ handler.queryEntry = function(msg, session, next) {
         return;
     }
 	var uid = ticketService.getUserIdByTicket(access_token, guest);
-	if(!!uid) {
+	if(!uid) {
         next(null, {
             code: 20000,
             msg:"access_token无效或者已过期，请出重新获取"
