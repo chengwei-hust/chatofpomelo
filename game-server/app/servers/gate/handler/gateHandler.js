@@ -22,9 +22,7 @@ var handler = Handler.prototype;
 handler.queryEntry = function(msg, session, next) {
 
     var guest = msg.guest;
-    console.info(guest);
-    if(!guest) {
-        console.info(guest);
+    if(guest == null) {
         next(null, {
             code: 10000,
             msg:"请传入是否游客身份参数guest"

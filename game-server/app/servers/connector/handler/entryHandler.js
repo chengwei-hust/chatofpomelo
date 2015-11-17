@@ -18,7 +18,7 @@ var Handler = function(app) {
  */
 Handler.prototype.entry = function(msg, session, next) {
     var guest = msg.guest;
-    if(!guest) {
+    if(guest == null) {
         next(null, {
             code: 10000,
             msg:"请传入是否游客身份参数guest"
