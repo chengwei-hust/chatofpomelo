@@ -54,7 +54,7 @@
           var fromUserId = parseInt($("#uid").attr("value"));
           var toUserId = parseInt($("#toUid").attr("value"));
           var content = $("#msg").attr("value");
-          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, to:toUserId, zhaopin:true, msg:{type:'txt', content:content}}, function(data) {
+          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, to:toUserId, content:content}, function(data) {
 
           });
       }
@@ -63,7 +63,7 @@
           var fromUserId = parseInt($("#uid").attr("value"));
           var groupId = parseInt($("#groupId").attr("value"));
           var content = $("#msg").attr("value");
-          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, group:groupId, msg:{type:'txt', content:content}}, function(data) {
+          pomelo.request("chat.chatHandler.sendChat", {from:fromUserId, roomno:groupId, content:content}, function(data) {
 
           });
       }
@@ -78,8 +78,8 @@
               if (!!data.to) {
                   addMessage(data.from, data.to, data.content);
               }
-              else if(!!data.group) {
-                  addGroupMessage(data.from, data.group, data.content);
+              else if(!!data.roomno) {
+                  addGroupMessage(data.from, data.roomno, data.content);
               }
               if(!!data.id) {
                   var chatType = !!data.group ? 1 : 0;   // 1 表示群聊  0　表示单聊
