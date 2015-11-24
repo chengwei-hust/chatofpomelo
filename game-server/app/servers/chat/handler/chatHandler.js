@@ -28,13 +28,19 @@ handler.loginRoom = function(msg, session, next) {
     console.info("enter loginRoom................");
     var connectors = this.app.getServersByType('connector');
 
-    if (!!msg.room_no && !!msg.user_id) {
+    if (!!msg.room_no) {
         var channelName = msg.room_no;
-        var member = msg.user_id;
+        var member = 0;
+        if(!!msg.user_id && msg.user_id > 0) {
+            member = msg.user_id;
+        } else if (!!msg.guest_id && msg.guest_id > 0) {
+            member = msg.guest_id;
+        }
         var globalChannelService = this.app.get('globalChannelService');
         console.info(dispatcher.dispatch(member, connectors));
-        globalChannelService.add(channelName, member, dispatcher.dispatch(member, connectors).id);
-
+        if (member > 0) {
+            globalChannelService.add(channelName, member, dispatcher.dispatch(member, connectors).id);
+        }
         next(null, {code: 200, msg: 'login room is ok.'});
     } else {
         next(null, {code: 500});
@@ -46,12 +52,19 @@ handler.logoutRoom = function(msg, session, next) {
     console.info("enter logoutRoom................");
     var connectors = this.app.getServersByType('connector');
 
-    if (!!msg.room_no && !!msg.user_id) {
+    if (!!msg.room_no) {
         var channelName = msg.room_no;
-        var member = msg.user_id;
+        var member = 0;
+        if(!!msg.user_id && msg.user_id > 0) {
+            member = msg.user_id;
+        } else if (!!msg.guest_id && msg.guest_id > 0) {
+            member = msg.guest_id;
+        }
         var globalChannelService = this.app.get('globalChannelService');
         console.info(dispatcher.dispatch(member, connectors));
-        globalChannelService.leave(channelName, member, dispatcher.dispatch(member, connectors).id);
+        if (member > 0) {
+            globalChannelService.leave(channelName, member, dispatcher.dispatch(member, connectors).id);
+        }
 
         next(null, {code: 200, msg: 'logout room is ok.'});
     } else {
